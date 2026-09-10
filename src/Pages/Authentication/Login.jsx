@@ -1,12 +1,16 @@
 import { useState } from "react";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
-import Button from "../../components/common/Button";
 import { useNavigate } from "react-router-dom";
 
+import Button from "../../components/common/Button";
+import Input from "../../components/common/Input";
+
 function Login() {
-  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,22 +27,25 @@ function Login() {
   };
 
   const handleSubmit = (e) => {
-    setLoading(true);
     e.preventDefault();
+
+    setLoading(true);
+
     setTimeout(() => {
       navigate("/dashboard");
     }, 1200);
-    console.log("Login Data:", formData);
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-background)] flex items-center justify-center px-4 py-8">
+    <div className="flex min-h-screen items-center justify-center bg-[var(--color-background)] px-4 py-8">
       <div className="w-full max-w-md">
         {/* Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
-            <div className="h-14 w-14 rounded-[var(--radius-lg)] bg-[var(--color-primary)] flex items-center justify-center shadow-[var(--shadow-md)]">
-              <span className="text-white text-xl font-bold">G</span>
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex items-center justify-center">
+            <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-primary)] shadow-[var(--shadow-md)]">
+              <span className="text-xl font-bold text-[var(--color-text-white)]">
+                G
+              </span>
             </div>
           </div>
 
@@ -52,7 +59,7 @@ function Login() {
         </div>
 
         {/* Login Card */}
-        <div className="bg-[var(--color-surface)] border border-[var(--color-border)] rounded-[var(--radius-xl)] shadow-[var(--shadow-lg)] p-6 sm:p-8">
+        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-lg)] sm:p-8">
           <div className="mb-6">
             <h2 className="text-[var(--text-xl)] font-semibold text-[var(--color-text-primary)]">
               Welcome Back
@@ -65,79 +72,56 @@ function Login() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
-            <div>
-              <label
-                htmlFor="email"
-                className="block mb-2 text-[var(--text-sm)] font-medium text-[var(--color-text-primary)]"
-              >
-                Email Address
-              </label>
-
-              <div className="relative">
-                <Mail
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
-                />
-
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email"
-                  autoComplete="email"
-                  className="w-full h-10 pl-10 pr-3 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--text-sm)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none transition-all duration-200 focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10"
-                />
-              </div>
-            </div>
+            <Input
+              label="Email Address"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Enter your email"
+              autoComplete="email"
+              required
+              icon={<Mail size={18} />}
+            />
 
             {/* Password */}
-            <div>
-              <label
-                htmlFor="password"
-                className="block mb-2 text-[var(--text-sm)] font-medium text-[var(--color-text-primary)]"
-              >
-                Password
-              </label>
-
-              <div className="relative">
-                <LockKeyhole
-                  size={18}
-                  className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)]"
-                />
-
-                <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Enter your password"
-                  autoComplete="current-password"
-                  className="w-full h-10 pl-10 pr-10 rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] text-[var(--text-sm)] text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none transition-all duration-200 focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/10"
-                />
-
+            <Input
+              label="Password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              value={formData.password}
+              onChange={handleChange}
+              placeholder="Enter your password"
+              autoComplete="current-password"
+              required
+              icon={<LockKeyhole size={18} />}
+              rightElement={
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
-                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="flex items-center justify-center text-[var(--color-text-muted)] transition-colors duration-150 hover:text-[var(--color-text-primary)]"
+                  aria-label={
+                    showPassword ? "Hide password" : "Show password"
+                  }
                 >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  {showPassword ? (
+                    <EyeOff size={18} />
+                  ) : (
+                    <Eye size={18} />
+                  )}
                 </button>
-              </div>
-            </div>
+              }
+            />
 
-            {/* Remember Me */}
+            {/* Remember + Forgot */}
             <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
+              <label className="flex cursor-pointer items-center gap-2">
                 <input
                   type="checkbox"
                   name="rememberMe"
                   checked={formData.rememberMe}
                   onChange={handleChange}
-                  className="h-4 w-4 rounded border-[var(--color-border)] text-[var(--color-primary)] focus:ring-[var(--color-primary)]"
+                  className="h-4 w-4 rounded border-[var(--color-border)] accent-[var(--color-primary)]"
                 />
 
                 <span className="text-[var(--text-sm)] text-[var(--color-text-secondary)]">
@@ -147,34 +131,27 @@ function Login() {
 
               <button
                 type="button"
-                className="text-[var(--text-sm)] font-medium text-[var(--color-primary)] hover:text-[var(--color-primary-hover)] transition-colors"
+                className="text-[var(--text-sm)] font-medium text-[var(--color-primary)] transition-colors duration-150 hover:text-[var(--color-primary-hover)]"
               >
                 Forgot Password?
               </button>
             </div>
 
-            {/* Login */}
+            {/* Submit */}
             <Button
               type="submit"
               variant="primary"
               size="lg"
               fullWidth
-              disabled={loading}
+              loading={loading}
             >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  Signing In...
-                </span>
-              ) : (
-                "Sign In"
-              )}
+              Sign In
             </Button>
           </form>
         </div>
 
         {/* Footer */}
-        <p className="text-center mt-6 text-[var(--text-xs)] text-[var(--color-text-muted)]">
+        <p className="mt-6 text-center text-[var(--text-xs)] text-[var(--color-text-muted)]">
           © {new Date().getFullYear()} GFC. All rights reserved.
         </p>
       </div>
