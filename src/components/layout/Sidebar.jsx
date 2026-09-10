@@ -5,33 +5,33 @@ const menuItems = [
   { label: "Dashboard", path: "/" },
 
   {
-    label: "Transactions",
+    label: "Sales",
     items: [
       { label: "Sale Invoice", path: "/sales/invoice" },
-      { label: "Sale History", path: "/sales/history" },
-      { label: "Advance Sale", path: "/sales/advance" },
       { label: "Sale Return", path: "/sales/return" },
+      { label: "Advance Sale", path: "/sales/advance" },
       { label: "Quotation", path: "/sales/quotation" },
       { label: "JV Sale", path: "/sales/jv" },
+      { label: "Sale History", path: "/sales/history" },
     ],
   },
 
   {
     label: "Purchases",
     items: [
-      { label: "Purchase History", path: "/purchases/history" },
-      { label: "Purchase Return", path: "/purchases/return" },
       { label: "Purchase Order", path: "/purchases/order" },
       { label: "Purchase Invoice", path: "/purchases/invoice" },
+      { label: "Purchase Return", path: "/purchases/return" },
+      { label: "Purchase History", path: "/purchases/history" },
     ],
   },
 
   {
     label: "Cash & Accounting",
     items: [
-      { label: "Cash Book", path: "/accounting/cash-book" },
       { label: "Receipt", path: "/accounting/receipt" },
       { label: "Payment", path: "/accounting/payment" },
+      { label: "Cash Book", path: "/accounting/cash-book" },
       { label: "Journal Voucher", path: "/accounting/journal-voucher" },
     ],
   },
@@ -131,10 +131,9 @@ function Sidebar() {
                     to={menu.path}
                     end
                     className={({ isActive }) =>
-                      `flex w-full items-center rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${
-                        isActive
-                          ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
-                          : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
+                      `flex w-full items-center rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                        ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                        : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
                       }`
                     }
                   >
@@ -147,18 +146,16 @@ function Sidebar() {
                       type="button"
                       onClick={() => toggleMenu(menu.label)}
                       aria-expanded={menuOpen}
-                      className={`flex w-full items-center justify-between rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${
-                        menuActive
-                          ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
-                          : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
-                      }`}
+                      className={`flex w-full items-center justify-between rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${menuActive
+                        ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                        : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
+                        }`}
                     >
                       <span>{menu.label}</span>
 
                       <span
-                        className={`text-xs transition-transform duration-200 ${
-                          menuOpen ? "rotate-90" : ""
-                        }`}
+                        className={`text-xs transition-transform duration-200 ${menuOpen ? "rotate-90" : ""
+                          }`}
                       >
                         ›
                       </span>
@@ -172,10 +169,9 @@ function Sidebar() {
                             key={item.path}
                             to={item.path}
                             className={({ isActive }) =>
-                              `block rounded-[var(--radius-sm)] px-3 py-2 text-sm transition-colors ${
-                                isActive
-                                  ? "bg-[var(--color-primary-light)] font-medium text-[var(--color-primary)]"
-                                  : "text-[var(--color-text-muted)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
+                              `block rounded-[var(--radius-sm)] px-3 py-2 text-sm transition-colors ${isActive
+                                ? "bg-[var(--color-primary-light)] font-medium text-[var(--color-primary)]"
+                                : "text-[var(--color-text-muted)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
                               }`
                             }
                           >
