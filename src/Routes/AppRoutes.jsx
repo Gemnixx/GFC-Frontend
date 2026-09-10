@@ -30,13 +30,17 @@ import AccountingReport from "../Pages/Reports/AccountingReport";
 import BackupRestore from "../Pages/Tools/BackupRestore";
 import ImportExport from "../Pages/Tools/ImportExport";
 import Setting from "../Pages/Tools/Setting";
+import Login from "../Pages/Authentication/Login";
 
 function AppRoutes() {
   return (
     <Routes>
+
+      <Route path="/" element={<Login/>}/>
+
       <Route element={<DashboardLayout />}>
         {/* Dashboard */}
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
         {/* Transactions */}
         <Route path="/sales/invoice" element={<SaleInvoice />} />
@@ -82,9 +86,9 @@ function AppRoutes() {
         <Route path="/reports/accounting" element={<AccountingReport />} />
 
         {/* Tools */}
-        <Route path="/tools/backup" element={<BackupRestore/>} />
-        <Route path="/tools/import-export" element={<ImportExport/>} />
-        <Route path="/tools/settings" element={<Setting/>} />
+        <Route path="/tools/backup" element={<BackupRestore />} />
+        <Route path="/tools/import-export" element={<ImportExport />} />
+        <Route path="/tools/settings" element={<Setting />} />
       </Route>
 
       {/* Unknown route */}
