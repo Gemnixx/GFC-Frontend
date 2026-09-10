@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 const menuItems = [
-  { label: "Dashboard", path: "/" },
+  { label: "Dashboard", path: "/dashboard" },
 
   {
     label: "Sales",
