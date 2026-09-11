@@ -1,21 +1,28 @@
 import { useState } from "react";
 import { Eye, EyeOff, LockKeyhole, Mail } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import Button from "../../components/common/Button";
 import Input from "../../components/common/Input";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 function Login() {
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false,
   });
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -24,54 +31,81 @@ function Login() {
       ...prev,
       [name]: type === "checkbox" ? checked : value,
     }));
+
+    if (error) {
+      setError("");
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    setError("");
     setLoading(true);
 
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 1200);
+    try {
+      await login({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+          "Login failed. Please check your email and password."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[var(--color-background)] px-4 py-8">
-      <div className="w-full max-w-md">
-        {/* Brand */}
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex items-center justify-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-[var(--radius-lg)] bg-[var(--color-primary)] shadow-[var(--shadow-md)]">
-              <span className="text-xl font-bold text-[var(--color-text-white)]">
-                G
-              </span>
-            </div>
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--bg-secondary)] px-4 py-10">
+      {/* Soft background glow */}
+      <div className="pointer-events-none absolute left-1/2 top-[-180px] h-[480px] w-[480px] -translate-x-1/2 rounded-full bg-blue-500/[0.06] blur-3xl" />
+
+      <div className="relative w-full max-w-[430px] pt-14">
+
+        {/* Floating Logo */}
+        <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2">
+          <div className="relative flex h-28 w-28 items-center justify-center rounded-full border border-white/80 bg-white p-5 shadow-[0_18px_45px_rgba(15,23,42,0.16)]">
+            
+            {/* Soft bubble highlight */}
+            <div className="pointer-events-none absolute left-4 top-3 h-5 w-5 rounded-full bg-white/80 blur-[2px]" />
+
+            <img
+              src="/Gfc-logo.svg"
+              alt="GFC Logo"
+              className="relative z-10 h-full w-full object-contain"
+            />
           </div>
-
-          <h1 className="text-[var(--text-2xl)] font-bold text-[var(--color-text-primary)]">
-            GFC
-          </h1>
-
-          <p className="mt-1 text-[var(--text-sm)] text-[var(--color-text-secondary)]">
-            Management Software
-          </p>
         </div>
 
-        {/* Login Card */}
-        <div className="rounded-[var(--radius-xl)] border border-[var(--color-border)] bg-[var(--color-surface)] p-6 shadow-[var(--shadow-lg)] sm:p-8">
-          <div className="mb-6">
-            <h2 className="text-[var(--text-xl)] font-semibold text-[var(--color-text-primary)]">
-              Welcome Back
-            </h2>
+        {/* Main Card */}
+        <div className="relative rounded-3xl border border-[var(--border-color)] bg-[var(--bg-primary)] px-7 pb-7 pt-20 shadow-[0_20px_60px_rgba(15,23,42,0.10)] sm:px-9 sm:pb-9">
 
-            <p className="mt-1 text-[var(--text-sm)] text-[var(--color-text-secondary)]">
-              Sign in to access your account
+          {/* Minimal Header */}
+          <div className="mb-7 text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--text-primary)]">
+              Welcome back
+            </h1>
+
+            <p className="mt-1.5 text-sm text-[var(--text-secondary)]">
+              Sign in to continue
             </p>
           </div>
 
+          {/* Error */}
+          {error && (
+            <div className="mb-5 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email */}
+
             <Input
               label="Email Address"
               name="email"
@@ -84,7 +118,6 @@ function Login() {
               icon={<Mail size={18} />}
             />
 
-            {/* Password */}
             <Input
               label="Password"
               name="password"
@@ -99,7 +132,7 @@ function Login() {
                 <button
                   type="button"
                   onClick={() => setShowPassword((prev) => !prev)}
-                  className="flex items-center justify-center text-[var(--color-text-muted)] transition-colors duration-150 hover:text-[var(--color-text-primary)]"
+                  className="flex items-center justify-center text-[var(--text-muted)] transition-colors hover:text-[var(--text-primary)]"
                   aria-label={
                     showPassword ? "Hide password" : "Show password"
                   }
@@ -121,23 +154,23 @@ function Login() {
                   name="rememberMe"
                   checked={formData.rememberMe}
                   onChange={handleChange}
-                  className="h-4 w-4 rounded border-[var(--color-border)] accent-[var(--color-primary)]"
+                  className="h-4 w-4 rounded border-[var(--border-color)] accent-[var(--color-primary)]"
                 />
 
-                <span className="text-[var(--text-sm)] text-[var(--color-text-secondary)]">
+                <span className="text-sm text-[var(--text-secondary)]">
                   Remember me
                 </span>
               </label>
 
               <button
                 type="button"
-                className="text-[var(--text-sm)] font-medium text-[var(--color-primary)] transition-colors duration-150 hover:text-[var(--color-primary-hover)]"
+                className="text-sm font-medium text-[var(--color-primary)] transition-colors hover:text-[var(--color-primary-hover)]"
               >
-                Forgot Password?
+                Forgot password?
               </button>
             </div>
 
-            {/* Submit */}
+            {/* Sign In */}
             <Button
               type="submit"
               variant="primary"
@@ -148,12 +181,14 @@ function Login() {
               Sign In
             </Button>
           </form>
-        </div>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-[var(--text-xs)] text-[var(--color-text-muted)]">
-          © {new Date().getFullYear()} GFC. All rights reserved.
-        </p>
+          {/* Tiny bottom detail */}
+          <div className="mt-6 border-t border-[var(--border-color)] pt-5 text-center">
+            <span className="text-xs text-[var(--text-muted)]">
+              GFC Management Software
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

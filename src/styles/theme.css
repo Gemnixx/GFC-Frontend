@@ -1,8 +1,8 @@
 :root {
   /* Brand */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #eff6ff;
+  --color-primary: #eb4625;
+  --color-primary-hover: #d8a01d;
+  --color-primary-light: #fff8ef;
 
   /* Semantic */
   --color-success: #16a34a;
@@ -26,7 +26,7 @@
   --color-text-muted: #64748b;
   --color-text-white: #ffffff;
 
-  --color-border: #e2e8f0;
+  --color-border: #eef0e2;
   --color-border-light: #f1f5f9;
 
   /* Font */
