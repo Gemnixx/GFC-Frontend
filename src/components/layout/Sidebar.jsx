@@ -1,15 +1,30 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Building2,
+  Store,
+  Database,
+  ShoppingCart,
+  Truck,
+  Wallet,
+  Package,
+  Users,
+  FolderOpen,
+  BarChart3,
+  Wrench,
+} from "lucide-react";
 
 const menuItems = [
-  { label: "Dashboard", path: "/dashboard" },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
 
-  { label: "Organization", path: "/organization" },
+  { label: "Organization", path: "/organization", icon: Building2 },
 
-  { label: "Outlets", path: "/outlets" },
+  { label: "Outlets", path: "/outlets", icon: Store },
 
   {
     label: "Master Data",
+    icon: Database,
     items: [
       { label: "Categories", path: "/categories" },
       { label: "Units", path: "/units" },
@@ -18,6 +33,7 @@ const menuItems = [
 
   {
     label: "Sales",
+    icon: ShoppingCart,
     items: [
       { label: "Sale Invoice", path: "/sales/invoice" },
       { label: "Sale Return", path: "/sales/return" },
@@ -30,6 +46,7 @@ const menuItems = [
 
   {
     label: "Purchases",
+    icon: Truck,
     items: [
       { label: "Purchase Order", path: "/purchases/order" },
       { label: "Purchase Invoice", path: "/purchases/invoice" },
@@ -40,6 +57,7 @@ const menuItems = [
 
   {
     label: "Cash & Accounting",
+    icon: Wallet,
     items: [
       { label: "Receipt", path: "/accounting/receipt" },
       { label: "Payment", path: "/accounting/payment" },
@@ -51,6 +69,7 @@ const menuItems = [
 
   {
     label: "Inventory",
+    icon: Package,
     items: [
       { label: "Items", path: "/inventory/items" },
       { label: "Opening Stock", path: "/inventory/opening-stock" },
@@ -63,6 +82,7 @@ const menuItems = [
 
   {
     label: "Accounts",
+    icon: Users,
     items: [
       { label: "Customers", path: "/accounts/customers" },
       { label: "Suppliers", path: "/accounts/suppliers" },
@@ -72,6 +92,7 @@ const menuItems = [
 
   {
     label: "Opening",
+    icon: FolderOpen,
     items: [
       { label: "Opening Balance", path: "/opening/balance" },
     ],
@@ -79,6 +100,7 @@ const menuItems = [
 
   {
     label: "Reports",
+    icon: BarChart3,
     items: [
       { label: "Sales Report", path: "/reports/sales" },
       { label: "Purchase Report", path: "/reports/purchases" },
@@ -92,6 +114,7 @@ const menuItems = [
 
   {
     label: "Tools",
+    icon: Wrench,
     items: [
       { label: "Backup & Restore", path: "/tools/backup" },
       { label: "Import / Export", path: "/tools/import-export" },
@@ -122,19 +145,19 @@ function Sidebar() {
     <aside className="fixed inset-y-0 left-0 z-40 flex w-[var(--sidebar-width)] flex-col border-r border-[var(--color-border)] bg-[var(--color-surface)]">
       {/* Logo */}
       {/* Logo */}
-<div className="flex h-[var(--topbar-height)] shrink-0 items-center border-b border-[var(--color-border)] px-5">
-  <div className="flex flex-col items-start leading-none">
-    <img
-      src="/Gfc-logo.svg"
-      alt="GFC Logo"
-      className="h-11 w-auto object-contain"
-    />
+      <div className="flex h-[var(--topbar-height)] shrink-0 items-center border-b border-[var(--color-border)] px-5">
+        <div className="flex flex-col items-start leading-none">
+          <img
+            src="/Gfc-logo.svg"
+            alt="GFC Logo"
+            className="h-11 w-auto object-contain"
+          />
 
-    <span className="mt-1.5 text-[11px] font-medium text-[var(--color-text-muted)]">
-      Outlet Management
-    </span>
-  </div>
-</div>
+          <span className="mt-1.5 text-[11px] font-medium text-[var(--color-text-muted)]">
+            Outlet Management
+          </span>
+        </div>
+      </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto p-3">
@@ -142,6 +165,7 @@ function Sidebar() {
           {menuItems.map((menu) => {
             const menuActive = isMenuActive(menu);
             const menuOpen = Boolean(openMenus[menu.label]);
+            const Icon = menu.icon;
 
             return (
               <div key={menu.label}>
@@ -151,14 +175,15 @@ function Sidebar() {
                     to={menu.path}
                     end
                     className={({ isActive }) =>
-                      `flex w-full items-center rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${
+                      `flex w-full items-center gap-2.5 rounded-[var(--radius-md)] px-3 py-2.5 text-sm font-medium transition-colors ${
                         isActive
                           ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
                           : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
                       }`
                     }
                   >
-                    {menu.label}
+                    {Icon && <Icon className="h-4 w-4 shrink-0" />}
+                    <span>{menu.label}</span>
                   </NavLink>
                 ) : (
                   <>
@@ -173,7 +198,10 @@ function Sidebar() {
                           : "text-[var(--color-text-secondary)] hover:bg-slate-50 hover:text-[var(--color-text-primary)]"
                       }`}
                     >
-                      <span>{menu.label}</span>
+                      <span className="flex items-center gap-2.5">
+                        {Icon && <Icon className="h-4 w-4 shrink-0" />}
+                        <span>{menu.label}</span>
+                      </span>
 
                       <span
                         className={`text-xs transition-transform duration-200 ${
