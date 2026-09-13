@@ -14,7 +14,7 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:5173");
+  win.loadURL("http://localhost:3001");
 }
 
 app.whenReady().then(() => {

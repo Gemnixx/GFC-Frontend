@@ -9,12 +9,14 @@ function Modal({
   size = "md",
   showCloseButton = true,
   closeOnOverlay = true,
+  layer = "base",
 }) {
   useEffect(() => {
     if (!isOpen) return;
 
     const handleEscape = (event) => {
       if (event.key === "Escape") {
+        event.preventDefault();
         onClose();
       }
     };
@@ -37,25 +39,34 @@ function Modal({
     xl: "max-w-4xl",
   };
 
+  const layerClass =
+    layer === "nested" ? "z-[200]" : "z-[100]";
+
   const handleOverlayClick = (event) => {
-    if (event.target === event.currentTarget && closeOnOverlay) {
+    if (
+      event.target === event.currentTarget &&
+      closeOnOverlay
+    ) {
       onClose();
     }
   };
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+      className={`fixed inset-0 ${layerClass} flex items-center justify-center bg-slate-900/50 p-4`}
       onMouseDown={handleOverlayClick}
       role="presentation"
     >
       <div
-        className={`w-full ${sizes[size]} overflow-hidden rounded-[var(--radius-lg)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]`}
+        className={`relative flex w-full ${
+          sizes[size] || sizes.md
+        } max-h-[90vh] flex-col overflow-visible rounded-[var(--radius-lg)] bg-[var(--color-surface)] shadow-[var(--shadow-lg)]`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <div className="flex items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
+        {/* HEADER */}
+        <div className="flex shrink-0 items-center justify-between border-b border-[var(--color-border)] px-5 py-4">
           <h2
             id="modal-title"
             className="text-lg font-semibold text-[var(--color-text-primary)]"
@@ -75,12 +86,14 @@ function Modal({
           )}
         </div>
 
-        <div className="max-h-[70vh] overflow-y-auto px-5 py-5">
+        {/* CONTENT */}
+        <div className="min-h-0 overflow-y-auto px-5 py-5">
           {children}
         </div>
 
+        {/* FOOTER */}
         {footer && (
-          <div className="flex items-center justify-end gap-3 border-t border-[var(--color-border)] px-5 py-4">
+          <div className="flex shrink-0 items-center justify-end gap-3 border-t border-[var(--color-border)] px-5 py-4">
             {footer}
           </div>
         )}
